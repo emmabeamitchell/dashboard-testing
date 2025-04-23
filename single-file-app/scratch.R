@@ -72,7 +72,7 @@ five_values_function <- function(id, year){
 
 hist_filt_function <- function(id, date){
   
-  # If date arguemnt has 2 values, assume it's a start/end range and expand it
+  # If date argument has 2 values, assume it's a start/end range and expand it
   if (length(date) == 2) {
     date <- seq(
       from = lubridate::ymd(paste0(date[1], "-01")), # converts into a Date type
