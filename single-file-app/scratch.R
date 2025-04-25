@@ -160,3 +160,177 @@ hist_values_specific <- function(id, date, type){
 }
 
 
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                     Actual Shortage Filtering Function                   ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+actual_filter_function <- function(id, date){
+  
+  # If date arguemnt has 2 values, assume it's a start/end range and expand it
+  if (length(date) == 2) {
+    date <- seq(
+      from = lubridate::ymd(paste0(date[1], "-01")), # Convert to Date type
+      
+      to   = lubridate::ymd(paste0(date[2], "-01")), # Convert to Date type
+      
+      by   = "1 month" # Sequence by month
+      
+    ) %>% format("%Y-%m") # Format back to Year and month, same as original input
+  }
+  
+  
+  # Filter water shortage to Goleta 
+  actual_filter <- water_data$actual_shortage %>% 
+    filter(org_id == id) %>% 
+    
+    mutate(year_month = format(start_date, "%Y-%m")) %>% 
+    
+    filter(year_month %in% date)
+  
+  return(actual_filter)
+}
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                      Actual Water Values Calculation                     ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+actual_values_function <- function(id, date){
+  
+  # Calculating total values
+  actual_values <- actual_filter_function(id, date) %>% 
+    summarize(average = mean(state_standard_shortage_level, na.rm = TRUE))
+  
+  return(actual_values)
+}
+
+render_value_box_actual <- function(label) {
+  renderValueBox({
+    req(input$org_id, input$year_range)
+    val <- actual_values_function(input$org_id, input$year_range) |> 
+      filter(actual_values == label) |> 
+      pull(average)
+    
+    valueBox(
+      value = ifelse(length(val) > 0, scales::comma(round(val, 0)), "0"),
+      subtitle = paste(label) |> 
+        pull(average),
+      icon = NULL,
+      color = "purple"
+    )
+})
+}
+
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                      Five Year Water Values Calculation                     ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+five_values_function <- function(id, year_range) {
+  five_filter_function(id, year_range) %>%
+    group_by(use_supply_aug_red) %>%
+    summarize(total_value = sum(acre_feet, na.rm = TRUE), .groups = 'drop')
+}
+
+render_value_box <- function(label) {
+  renderValueBox({
+    req(input$org_id, input$year_range)
+    val <- five_values_function(input$org_id, input$year_range) %>%
+      filter(use_supply_aug_red == label) %>%
+      pull(total_value)
+    
+    valueBox(
+      value = ifelse(length(val) > 0, scales::comma(round(val, 0)), "0"),
+      subtitle = paste(label, "(Acre Feet)"),
+      icon = NULL,
+      color = switch(label,
+                     "Use" = "purple",
+                     "Supply" = "blue",
+                     "Supply Augmentation" = "green",
+                     "Demand Reduction" = "red")
+    )
+  })
+}
+
+output$fiveyr_value_box_use    <- render_value_box("Use")
+output$fiveyr_value_box_supply <- render_value_box("Supply")
+output$fiveyr_value_box_aug    <- render_value_box("Supply Augmentation")
+output$fiveyr_value_box_red    <- render_value_box("Demand Reduction")
+
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                      Monthly Water Value Calculation                     ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+monthly_values_function <- function(id, date){
+  
+  # Calculate total values 
+  monthly_values <- monthly_filter(id, date) %>% 
+    
+    # Pivot columns for easier computation 
+    pivot_longer(cols = c(shortage_surplus_acre_feet, starts_with("benefit")),
+                 names_to = "use_supply_aug_red",
+                 values_to = "acre_feet") %>% 
+    
+    # Group by new column and summarize total acre-feet
+    group_by(use_supply_aug_red) %>% 
+    summarize(total = sum(acre_feet, na.rm = TRUE))
+  
+  return(monthly_values)
+}
+
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                      Monthly Water Filtering Function                    ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+monthly_filter <- function(id, date){
+  
+  # If date arguemnt has 2 values, assume it's a start/end range and expand it
+  if (length(date) == 2) {
+    date <- seq(
+      from = lubridate::ymd(paste0(date[1], "-01")), # Converts into Date type
+      
+      to   = lubridate::ymd(paste0(date[2], "-01")), # Converts into Date type
+      
+      by   = "1 month" # sequences by month 
+    ) %>% format("%Y-%m") # Reformats back into year and month, same as input values
+  }
+  
+  # Filter to org_id
+  monthly_filter <- water_data$monthly_water_outlook %>% 
+    filter(org_id == id) %>% 
+    
+    # Create new forecast year column
+    mutate(year_month = format(forecast_start_date, "%Y-%m")) %>% 
+    
+    filter(year_month %in% date)
+  
+  return(monthly_filter)
+}
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                 Monthly Water Number of Months Calculation               ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+monthly_months_function <- function(id, date){
+  
+  monthly_months <- monthly_filter(id, date) %>% 
+    
+    # Pivot columns for easier computation
+    pivot_longer(cols = c(shortage_surplus_acre_feet, starts_with("benefit")),
+                 names_to = "use_supply_aug_red",
+                 values_to = "acre_feet") %>% 
+    
+    # Remove total annual observations
+    filter(is_annual == FALSE,
+           
+           # Filter where observations not = 0 
+           acre_feet != 0) %>% 
+    
+    # Group by new column and summarize total acre-feet
+    group_by(use_supply_aug_red) %>% 
+    summarize(num_months = n())
+  
+  return(monthly_months)
+}
