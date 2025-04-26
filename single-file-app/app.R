@@ -55,6 +55,7 @@ ui <- fluidPage(
   
   br(),
   
+  # ---- CONDITIONAL PANELS ----
   conditionalPanel(
     condition = "input.dataset_selector == 'five_year_outlook'",
     fluidRow(
@@ -89,13 +90,33 @@ ui <- fluidPage(
     fluidRow(
       lapply(0:6, function(i) column(2, div(class = "value-box-custom", valueBoxOutput(paste0("shortage_level_", i)))))
     )
+  ),
+  
+  conditionalPanel(
+    condition = "input.dataset_selector == 'historical_production'",
+    fluidRow(
+      column(12,
+             selectInput("type", "Select Water Type(s)", 
+                         choices = c("agriculture", "surface water", "industrial", "other", 
+                                     "single-family residential", "commercial/institutional",
+                                     "landscape irrigation", "multi-family residential", 
+                                     "other pws", "recycled", "sold to another pws", "groundwater wells",
+                                     "non-potable (total excluded recycled)", 
+                                     "purchased or received from another pws",
+                                     "non-potable water sold to another pws"),
+                         multiple = TRUE, width = "100%")
+      )
+    ),
+    fluidRow(
+      uiOutput("hist_value_boxes")
+    )
   )
 )
 
 # ---- Server ----
 server <- function(input, output, session) {
   
-  # --- Date Range Helper ----
+  # ---- Date Range Helper ----
   date_range <- reactive({
     req(input$dataset_selector)
     df <- water_data[[input$dataset_selector]]
@@ -114,7 +135,7 @@ server <- function(input, output, session) {
     )
   })
   
-  # --- Update Inputs when Dataset Changes ----
+  # ---- Update Inputs when Dataset Changes ----
   observeEvent(input$dataset_selector, {
     df <- water_data[[input$dataset_selector]]
     orgs <- sort(unique(df$org_id))
@@ -136,7 +157,7 @@ server <- function(input, output, session) {
                        options = list(minDate = start, maxDate = dr$maxDate))
   })
   
-  # ---- SAFE Filter Functions ----
+  # ---- Helper Filter Functions ----
   actual_filter <- function(id, date){
     start_month <- format(as.Date(date[1]), "%Y-%m")
     end_month   <- format(as.Date(date[2]), "%Y-%m")
@@ -207,6 +228,7 @@ server <- function(input, output, session) {
   output$fiveyr_aug    <- render_five_value_box("Supply Augmentation")
   output$fiveyr_red    <- render_five_value_box("Demand Reduction")
   
+  # ---- Monthly Water Outlook Value Boxes ----
   # ---- Monthly Water Value Boxes ----
   monthly_values_function <- function(id, date){
     monthly_filter(id, date) %>%
@@ -286,6 +308,59 @@ server <- function(input, output, session) {
   
   output$monthly_red_value <- render_monthly_value("benefit_demand_reduction_acre_feet", "blue")
   output$monthly_red_months <- render_monthly_months("benefit_demand_reduction_acre_feet", "teal")
+  
+  
+  
+  # ---- Historical Production Value Boxes ----
+  hist_filt_function <- function(id, date){
+    if (length(date) == 2) {
+      date <- seq(
+        from = ymd(paste0(date[1], "-01")),
+        to   = ymd(paste0(date[2], "-01")),
+        by   = "1 month"
+      ) %>% format("%Y-%m")
+    }
+    water_data$historical_production %>%
+      filter(org_id == id) %>%
+      mutate(year_month = format(start_date, "%Y-%m")) %>%
+      filter(year_month %in% date)
+  }
+  
+  hist_values_specific <- function(id, date, type){
+    hist_filt_function(id, date) %>%
+      filter(water_type != "total") %>%
+      group_by(water_produced_or_delivered, water_type) %>%
+      summarize(total_value = sum(quantity_acre_feet, na.rm = TRUE)) %>%
+      filter(water_type %in% type)
+  }
+  
+  output$hist_value_boxes <- renderUI({
+    req(input$org_id, input$date_picker_start, input$date_picker_end)
+    
+    selected_dates <- c(
+      format(input$date_picker_start, "%Y-%m"),
+      format(input$date_picker_end, "%Y-%m")
+    )
+    
+    if (!is.null(input$type) && length(input$type) > 0) {
+      
+      values_df <- hist_values_specific(input$org_id, selected_dates, input$type)
+      
+      value_boxes <- lapply(seq_len(nrow(values_df)), function(i) {
+        valueBox(
+          value = scales::comma(values_df$total_value[i]),
+          subtitle = paste(values_df$water_type[i], "-", values_df$water_produced_or_delivered[i]),
+          icon = icon("tint"),
+          width = 3
+        )
+      })
+      
+      fluidRow(value_boxes)
+      
+    } else {
+      NULL
+    }
+  })
   
 }
 
