@@ -1,0 +1,14 @@
+---
+title: "home page intro"
+output: html_document
+date: "2025-05-18"
+---
+### About the Dashboard
+
+This dashboard visualizes data from the [Urban Water Data - Drought Planning and Management portal](https://data.cnra.ca.gov/dataset/urban-water-data-drought). This dashboard provides information on historical and forecasted data related to water shortage conditions, as well as water production and delivery across various water agencies in California. 
+
+This dashboard aims to continue the work of the California Water Data Consortium in partnership with the Department of Water Resources (DWR) and the State Water Resources and Control Board (SWB), in providing usable data for analyses related to drought planning and management for urban water suppliers--ultimately contributing to improvements in communication around drought.
+
+### Data in the Dashboard
+
+

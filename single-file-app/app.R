@@ -29,7 +29,51 @@ load_water_data <- function() {
 water_data <- load_water_data()
 
 # ---- UI ----
-ui <- fluidPage(
+ui <- navbarPage(
+  "Urban Water Data",
+  tabPanel(
+    title = "Home",
+    fluidPage(
+      
+      # BEGIN BOX FOR ENTIRE PAGE
+      box(
+        width = NULL,
+        
+        # title
+        h2(tags$strong("Welcome to the Urban Water Data Dashboard"), style = "font-size: 35px"),
+        
+        column(
+          width = 7,
+       
+        # text description
+        includeMarkdown("text/homepage_intro.Rmd")),
+        
+        column(
+          width = 5,
+          style = "border: 1px double black;",
+          
+          # text description
+          includeMarkdown("text/homepage_box.Rmd")
+          
+        ),
+        
+        fluidRow(
+          
+          # text description
+          includeMarkdown("text/homepage_text.Rmd") 
+          
+        )
+    
+    
+      )
+    
+      
+    )
+    
+  ),
+  tabPanel(
+    title = "Dashboard",
+
   
   tags$head(tags$style(HTML("
     .value-box-custom .small-box {
@@ -121,7 +165,8 @@ ui <- fluidPage(
       )
     )
   )
-)
+))
+
 
 
 

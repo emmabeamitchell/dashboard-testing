@@ -1,0 +1,14 @@
+---
+title: "homepage_box"
+output: html_document
+---
+
+#### **Why Make Data More Usable?**
+
+Critical drought related data is collected individually in urban water districts across California. This data is then reported to both the Department of Water Resources and the State Water Resources and Control Board. These reports vary in format, frequency, and data requirements. This data was housed in multiple places on each agency's website, making it difficult to find and access information. 
+
+Water district data is an integral part of planning for droughts. With information scattered in multiple locations and in different formats, it can be difficult to access the data needed to make data informed decisions about water and drought management. 
+
+Reported data was compiled, narrowed down, and cleaned into a csv format in a single portal, making it simple to download and view the data. This dashboard continues this mission of making data more usable, by providing visualizations, maps, and summary statistics, all visible without any coding or Excel experience. 
+
+

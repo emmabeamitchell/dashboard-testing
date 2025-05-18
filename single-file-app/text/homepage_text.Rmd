@@ -1,0 +1,18 @@
+---
+title: "homepage_text"
+output: html_document
+---
+
+### Where'd This Data Come From?
+
+### About the California Water Data Consortium
+
+### Data Limitations
+talk about limitations
+talk about gap analysis
+
+#### Additional Resources 
+
+#### References
+
+#### Created by graduate students .... UCSB ... Names
