@@ -1,0 +1,18 @@
+---
+title: "homepage_CWDC"
+output: html_document
+---
+
+#### About the California Water Data Consortium 
+
+
+Catalyzed by five years of historic drought, the California Legislature passed the Open and Transparent Water Data Act in 2016, which requires integration of the existing water and ecological data into an open-access platform to help water managers operate California’s water systems more effectively and help water users make more informed decisions.
+
+To help achieve the act's goals, state agencies supported the creation of the [California Water Data Consortium](https://cawaterdata.org/), a non-profit organization with active State participation. The Water Data Consortium serves as a neutral space that facilitates collaboration and sustained engagement across public, private, and nonprofit sectors to improve the data life cycle and increase access to high quality, comprehensive and interoperable data to inform water decision-making.
+
+ The California Water Data Consortium is committed to creating a resilient and equitable water future where open and accessible data inform all water management decisions in California.
+
+#### Urban Water Reporting Project
+
+This dashboard was created in collaboration with the Urban Water Reporting Project, which seeks to understand the collection and use of urban water reports and data to improve data sharing and alignment throughout California's state and local agencies. For more information on this project [click here](https://cawaterdata.org/projects/urban-water-reporting-project/).
+

@@ -1,0 +1,12 @@
+---
+title: "homepage_end"
+output: html_document
+---
+
+#### References
+
+California drinking water system area boundaries used in the dashboard are from the State Water Resources Control Board and published for the public on the [California State Geoportal](https://gis.data.ca.gov/datasets/waterboards::california-drinking-water-system-area-boundaries/about)
+
+Code for this dashboard is available on the [project Github](https://github.com/CalDrought/dashboard)
+
+**The California Water Data Consortium partnered with graduate students in the Master of Environmental Data Science Program at the Bren School for Environmental Science and Management at UC Santa Barbara to create this dashboard. These students are: [Tom Gibbens-Matsuyama](https://www.linkedin.com/in/tom-gibbens-matsuyama-861458248/), [Emma Bea Mitchell](www.linkedin.com/in/emma-bea-mitchell), [Karol Paya](https://www.linkedin.com/in/karolpaya/), and [Takeen Shamloo](https://www.linkedin.com/in/takeen-shamloo-aa2685162/). [Click here](https://bren.ucsb.edu/projects/data-drought-resiliency) to learn more about their project *Visualizing Urban Water Data for Drought Management Across California.***

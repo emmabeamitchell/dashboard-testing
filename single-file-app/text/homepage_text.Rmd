@@ -3,16 +3,25 @@ title: "homepage_text"
 output: html_document
 ---
 
-### Where'd This Data Come From?
+### Data in the Dashboard
 
-### About the California Water Data Consortium
+**Actual Shortage Level**
 
-### Data Limitations
-talk about limitations
-talk about gap analysis
+This dataset contains information on shortage levels from urban retail water suppliers. Water shortage levels are predefined stages used by water management authorities to respond to varying degrees of water scarcity. Each level represents a specific severity of shortage and dictates corresponding conservation measures, restrictions, and actions to manage and reduce water use effectively. The levels go from 0-6: 0 (No Shortage Level Invoked), 1 (Less than 10% Shortage), 2 (10-19% Shortage), 3 (20-29% Shortage), 4 (30-39% Shortage), 5 (40-49% Shortage), and 6 (Greater than 50% Shortage). This data came from 
+[Click here to find more information on data origins and variable definitions](https://data.cnra.ca.gov/dataset/57b20340-2b03-4c22-bc52-b59047451496/resource/c3832742-5525-442d-b762-59453d500aba/download/actual_water_shortage_level.csv).
 
-#### Additional Resources 
 
-#### References
+**Five Year Water Shortage Outlook**
 
-#### Created by graduate students .... UCSB ... Names
+This dataset contains urban water districts' forecasted water shortage and surplus data for five years, based on the five driest consecutive years on record. This data shows shortage and surplus as the same variable (positive values indicate surplus, negative values indicate shortage), and also shows anticipated shortage actions as the augmentation (amount of additional water gained from other sources) and reduction (amount of water reduced). *Please be aware that this data contains forecasted values rather than actual values.* [Click here to find more information on data origins and variable definitions](https://data.cnra.ca.gov/dataset/57b20340-2b03-4c22-bc52-b59047451496/resource/77b47bbe-7e09-4580-9eb1-092c035099e9/download/five_year_water_shortage_outlook.csv)
+
+
+**Historical Production and Delivery**
+
+This dataset provides production and delivery data by water system and water type. Water types for delivered data represent the sectors that water in the district is delivering to. Options include agriculture, single-family residential, commercial/institutional, industrial, landscape irrigation, multi-family residential, other public water system, and other. Water types for produced data represent the sources of water in the district. Options include recycled, surface water, groundwater wells, non-potable (total excluded recycled), purchased or received from another public or non-potable water sold to another public water systems. The data contains information on the amount of water (in acre-feet) going or coming from each water type, divided by district. Each district has an entry for every water type, meaning that if a district does not have every water type, they may have submitted NA (non-applicable) instead of an amount of water, resulting in a disproportionately large amount of missing values for that district. [Click here to find more information on data origins and variable definitions](https://data.cnra.ca.gov/dataset/57b20340-2b03-4c22-bc52-b59047451496/resource/b73488e4-5630-4d35-a4d5-ce3b879b8546/download/historical_production_delivery.csv)
+
+**Monthly Water Shortage Outlook**
+
+This dataset provides forecasted monthly (and annual) potable water shortage (or surplus) with and without shortage actions for a dry year. Information includes predicted shortage levels from 0-6: 0 (No Shortage Level Invoked), 1 (Less than 10% Shortage), 2 (10-19% Shortage), 3 (20-29% Shortage), 4 (30-39% Shortage), 5 (40-49% Shortage), and 6 (Greater than 50% Shortage). This dataset also includes predicted water shortage and surplus (in acre-feet) calculated by subtracting the anticipated unconstrained demand from the anticipated unconstrained supply; predicted water shortage and surplus percentages calculated by subtracting the anticipated unconstrained demand from the anticipated unconstrained supply divided by the unconstrained demand and multiplied by 100; and water reduction and/or augmentation (in acre-feet) in the district's shortage contingency plan (districts may not have shortage contingency plans, and as a result will not have augmentation/reduction data). [Click here to find more information on data origins and variable definitions](https://data.cnra.ca.gov/dataset/57b20340-2b03-4c22-bc52-b59047451496/resource/caf0ef52-98f9-48f1-af4c-025760fd80b2/download/monthly_water_shortage_outlook.csv)
+
+

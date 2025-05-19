@@ -58,10 +58,38 @@ ui <- navbarPage(
         ),
         
         fluidRow(
+          column(
+            width = 12,
           
           # text description
           includeMarkdown("text/homepage_text.Rmd") 
           
+        )),
+        
+        fluidRow(
+          column(
+            width = 6,
+            style = "border: 1px double black;",
+            
+            # text description
+            includeMarkdown("text/homepage_limitations.Rmd")
+          ),
+          column(
+            width = 6,
+            
+            # text description
+            includeMarkdown("text/homepage_CWDC.Rmd")
+          )
+        ),
+        
+        fluidRow(
+          column(
+            width = 12,
+            
+            includeMarkdown("text/homepage_end.Rmd")
+            
+            
+          )
         )
     
     

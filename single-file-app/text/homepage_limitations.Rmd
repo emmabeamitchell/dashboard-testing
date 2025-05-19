@@ -1,0 +1,17 @@
+---
+title: "homepage_limitations"
+output: html_document
+---
+
+#### **Data Limitations**
+
+We acknowledge that data quality issues may (and will) exist. A combination of complex data, reporting methods, and the reality of integrating varying data into a cohesive format, has led to limitations with this data. 
+
+**Data is limited in date availability**. The Actual Water Shortage Levels dataset only has data from 2022 and onwards due to previous lack of standardization in shortage level reporting. Historical Production and Delivery data is only available from 2013 to 2022, due to the relocation of reported data in later dates. The Monthly Water Shortage Outlook dataset and the Five Year Water Shortage Outlook dataset, which both contain forecasted data, are now out of date and the majority of the data no longer represents predictions for future dates. 
+
+**Datasets are not all based on actual values**. The Monthly Water Shortage Outlook dataset and the Five Year Water Shortage Outlook dataset represent forecasts, which are specific to the urban supplier and a snapshot in time based on the conditions when the supplier completed the plan. These data are expected to change as conditions change. The Actual Water Shortage Levels dataset has guidelands for the calculation of water shortage levels, but is not standardized across all districts. Water shortage interpretations may vary. 
+
+**All data used in this dashboard is self-reported** by local urban water districts in California. With self reported data comes inconsistencies, as districts may input incorrect information or miss entries, and the reporting and calculations will naturally vary from district to district. 
+
+If you are interested in learning about the specifics of limitations and issues in the data, please see the gap analysis report located [here](https://github.com/CalDrought/gap_analysis). 
+
